@@ -17,7 +17,7 @@ The system takes in detailed information about the student, including their acad
 
 ## Creator
 
-This project was created by **Arjun Rajesh**, a first-year Computer Science Engineering student at Amrita University (AM.SC.U4CSE23208). Arjun is passionate about using technology to improve educational processes and is excited to contribute to the Amrita community with this project.
+This project was created by **Arjun Rajesh,Yadhu Vipin,Ajith Ashok,Ayyappadas M.T **, are first-year Computer Science Engineering students at Amrita University . We passionate about using technology to improve educational processes and is excited to contribute to the Amrita community with this project.
 
 ## Contributions
 
