@@ -14,32 +14,44 @@ public class Project extends JFrame {
         Image image = imageIcon.getImage().getScaledInstance(1280, 720, Image.SCALE_DEFAULT);
         ImageIcon scaledImageIcon = new ImageIcon(image);
         JLabel backgroundImage = new JLabel(scaledImageIcon);
-        add(backgroundImage, BorderLayout.CENTER); 
+        backgroundImage.setLayout(new BorderLayout()); // Add this line
+        add(backgroundImage, BorderLayout.CENTER);
 
         JMenuBar menuBar = new JMenuBar();
 
         JMenu studentDetailsMenu = new JMenu("Student Details");
-        studentDetailsMenu.addActionListener(new StudentDetailsMenuListener());
+        JMenuItem studentDetailsMenuItem = new JMenuItem("Student Details");
+        studentDetailsMenuItem.addActionListener(new StudentDetailsMenuListener());
+        studentDetailsMenu.add(studentDetailsMenuItem);
         menuBar.add(studentDetailsMenu);
 
         JMenu courseAllotedMenu = new JMenu("Course Alloted");
-        courseAllotedMenu.addActionListener(new CourseAllotedMenuListener());
+        JMenuItem courseAllotedMenuItem = new JMenuItem("Course Alloted");
+        courseAllotedMenuItem.addActionListener(new CourseAllotedMenuListener());
+        courseAllotedMenu.add(courseAllotedMenuItem);
         menuBar.add(courseAllotedMenu);
 
         JMenu slabAllotedMenu = new JMenu("Slab Alloted");
-        slabAllotedMenu.addActionListener(new SlabAllotedMenuListener());
+        JMenuItem slabAllotedMenuItem = new JMenuItem("Slab Alloted");
+        slabAllotedMenuItem.addActionListener(new SlabAllotedMenuListener());
+        slabAllotedMenu.add(slabAllotedMenuItem);
         menuBar.add(slabAllotedMenu);
 
         JMenu feeManagementMenu = new JMenu("Fee Management");
-        feeManagementMenu.addActionListener(new FeeManagementMenuListener());
+        JMenuItem feeManagementMenuItem = new JMenuItem("Fee Management");
+        feeManagementMenuItem.addActionListener(new FeeManagementMenuListener());
+        feeManagementMenu.add(feeManagementMenuItem);
         menuBar.add(feeManagementMenu);
 
         JMenu hostelMenu = new JMenu("Hostel");
-        hostelMenu.addActionListener(new HostelMenuListener());
+        JMenuItem hostelMenuItem = new JMenuItem("Hostel");
+        hostelMenuItem.addActionListener(new HostelMenuListener());
+        hostelMenu.add(hostelMenuItem);
         menuBar.add(hostelMenu);
 
         setJMenuBar(menuBar);
 
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Add this line
         setVisible(true);
     }
 
@@ -48,7 +60,6 @@ public class Project extends JFrame {
         public void actionPerformed(ActionEvent e) {
             try {
                 new StudentInfo();
-                JOptionPane.showMessageDialog(Project.this, "Student Details menu option selected");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(Project.this, "Error: " + ex.getMessage());
             }
@@ -60,7 +71,6 @@ public class Project extends JFrame {
         public void actionPerformed(ActionEvent e) {
             try {
                 new Courses();
-                JOptionPane.showMessageDialog(Project.this, "Course Alloted menu option selected");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(Project.this, "Error: " + ex.getMessage());
             }
@@ -70,8 +80,8 @@ public class Project extends JFrame {
     private class SlabAllotedMenuListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            try { 
-                JOptionPane.showMessageDialog(Project.this, "Slab Alloted menu option selected");
+            try {
+                new EntranceExam();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(Project.this, "Error: " + ex.getMessage());
             }
@@ -82,7 +92,7 @@ public class Project extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                JOptionPane.showMessageDialog(Project.this, "Fee Management menu option selected");
+                new FeePaymentGUI();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(Project.this, "Error: " + ex.getMessage());
             }
@@ -93,7 +103,7 @@ public class Project extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                JOptionPane.showMessageDialog(Project.this, "Hostel menu option selected");
+                new HostelManagementSystem();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(Project.this, "Error: " + ex.getMessage());
             }
