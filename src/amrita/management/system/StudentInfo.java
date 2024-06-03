@@ -1,20 +1,15 @@
 package amrita.management.system;
-
 import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
 
 public class StudentInfo {
     static final String DB_URL = "jdbc:mysql://localhost/amritamanagementsystem";
-    static final String USER = "ARJUN";
-    static final String PASS = "@Arjunr24";
+    static final String USER = "root";
+    static final String PASS = "root";
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new StudentInfo();
-            }
-        });
+        SwingUtilities.invokeLater(StudentInfo::new);
     }
 
     public StudentInfo() {
@@ -30,49 +25,60 @@ public class StudentInfo {
         JTextField[] textFields = new JTextField[labels.length];
         for (int i = 0; i < labels.length; i++) {
             JTextField textField = new JTextField();
-            textField.setEditable(false);  // Make text field uneditable
             panel.add(new JLabel(labels[i]));
             panel.add(textField);
             textFields[i] = textField;
         }
 
         // Add buttons
-        JButton homeButton = new JButton("Home");
-        homeButton.addActionListener(e -> new Project());
-        panel.add(homeButton);
+        JButton saveButton = new JButton("Save");
+        saveButton.addActionListener(e -> {
+            if (saveToDatabase(textFields))
+                JOptionPane.showMessageDialog(frame, "Data saved successfully.");
+            else
+                JOptionPane.showMessageDialog(frame, "Failed to save data.");
+        });
+        panel.add(saveButton);
 
         JButton editButton = new JButton("Edit");
-        editButton.addActionListener(e -> new Upload());
+        editButton.addActionListener(e -> {
+            for (JTextField textField : textFields) {
+                textField.setEditable(true);
+            }
+        });
         panel.add(editButton);
 
         frame.add(panel);
         frame.setVisible(true);
 
-        connectToDatabase(textFields);
+        fetchDataFromDatabase(textFields);
     }
 
-    public void connectToDatabase(JTextField[] textFields) {
-        Connection conn = null;
-        Statement stmt = null;
-        try {
-            // Register JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
+    public boolean saveToDatabase(JTextField[] textFields) {
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             PreparedStatement preparedStatement = conn.prepareStatement("UPDATE student_info SET name=?, dob=?, sex=?, father_name=?, mother_name=?, occupation=?, address=?, zip_code=?, country=?, phone_number=?, landline_number=?")) {
 
-            // Open a connection
-            System.out.println("Connecting to database...");
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            for (int i = 0; i < textFields.length; i++) {
+                preparedStatement.setString(i + 1, textFields[i].getText());
+            }
 
-            // Execute a query
-            System.out.println("Creating statement...");
-            stmt = conn.createStatement();
-            String sql;
-            sql = "SELECT * FROM student_info";
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    public void fetchDataFromDatabase(JTextField[] textFields) {
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+             Statement stmt = conn.createStatement()) {
+
+            String sql = "SELECT * FROM student_bio";
             ResultSet rs = stmt.executeQuery(sql);
 
-            // Extract data from result set
             if (rs.next()) {
-                // Retrieve by column name
-                // Assuming you have columns named 'name', 'dob', 'ex', etc. in your table
                 textFields[0].setText(rs.getString("name"));
                 textFields[1].setText(rs.getString("dob"));
                 textFields[2].setText(rs.getString("sex"));
@@ -86,42 +92,8 @@ public class StudentInfo {
                 textFields[10].setText(rs.getString("landline_number"));
             }
 
-            // Clean-up environment
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (SQLException se) {
-            // Handle errors for JDBC
-            se.printStackTrace();
-        } catch (Exception e) {
-            // Handle errors for Class.forName
-            e.printStackTrace();
-        } finally {
-            // Finally block used to close resources
-            try {
-                if (stmt!= null)
-                    stmt.close();
-            } catch (SQLException se2) {
-            } // Nothing we can do
-            try {
-                if (conn!= null)
-                    conn.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            } // End finally try
-        } // End try
-        System.out.println("Goodbye!");
-    } // End connectToDatabase
-
-    class Project {
-        public Project() {
-            // Your code here
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
-
-    class Upload {
-        public Upload() {
-            // Your code here
-        }
-    }
-} // End StudentInfo
+}

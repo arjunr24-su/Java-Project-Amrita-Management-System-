@@ -166,12 +166,12 @@ public class Upload extends JFrame {
 
 class Database {
     private static final String URL = "jdbc:mysql://localhost:3306/amrita_management_system";
-    private static final String USER = "ARJUN";
-    private static final String PASSWORD = "@Arjunr24";
+    private static final String USER = "root";
+    private static final String PASSWORD = "root";
 
     public void insertStudentDetails(String firstName, String middleName, String lastName, String dob, String sex, String classXMarks, String classXIIMarks, String jeeMainsPercentile, String studentPhoto, String classXMarklist, String classXIIMarklist, String jeeMarklist, String aadharCard, String dobCertificate) {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO students (full_name, dob, sex, class_x_marks, class_xii_marks, jee_mains_percentile, student_photo, class_x_marklist, class_xii_marklist, jee_marklist, aadhar_card, dob_certificate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)")) {
+             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO student_bio (full_name, dob, sex, class_x_marks, class_xii_marks, jee_mains_percentile, student_photo, class_x_marklist, class_xii_marklist, jee_marklist, aadhar_card, dob_certificate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)")) {
 
             preparedStatement.setString(1,firstName + " " + middleName + " " + lastName);
             preparedStatement.setString(2, dob);

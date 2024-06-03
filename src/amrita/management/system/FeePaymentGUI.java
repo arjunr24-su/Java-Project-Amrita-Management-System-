@@ -9,13 +9,17 @@ public class FeePaymentGUI {
 
     private final JTextField studentIDField;
     private final JTextField amountField;
-    private JComboBox<String> paymentMethodComboBox;
+    private final JComboBox<String> paymentMethodComboBox;
     private final JButton payButton;
+    private JPanel cardDetailsPanel;
+    private JTextField cardNumberField;
+    private JTextField expiryDateField;
+    private JTextField cvvField;
 
     public FeePaymentGUI() {
         JFrame frame = new JFrame("Fee Payment");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 250);
+        frame.setSize(400, 300);
 
         // Set background color and font
         frame.getContentPane().setBackground(new Color(128, 0, 0)); // Maroon color
@@ -67,50 +71,7 @@ public class FeePaymentGUI {
         paymentMethodComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (paymentMethodComboBox.getSelectedItem().equals("Credit Card") ||
-                        paymentMethodComboBox.getSelectedItem().equals("Debit Card")) {
-                    JPanel cardDetailsPanel = new JPanel();
-                    cardDetailsPanel.setLayout(new GridBagLayout());
-                    JLabel cardNumberLabel = new JLabel("Card Number:");
-                    cardNumberLabel.setFont(font);
-                    cardNumberLabel.setForeground(new Color(255, 255, 255));
-                    GridBagConstraints cardGbc = new GridBagConstraints();
-                    cardGbc.insets = new Insets(5, 5, 5, 5);
-                    cardGbc.gridx = 0;
-                    cardGbc.gridy = 0;
-                    cardDetailsPanel.add(cardNumberLabel, cardGbc);
-                    JTextField cardNumberField = new JTextField(20);
-                    cardNumberField.setFont(font);
-                    cardGbc.gridx = 1;
-                    cardGbc.gridy = 0;
-                    cardDetailsPanel.add(cardNumberField, cardGbc);
-
-                    JLabel expiryDateLabel = new JLabel("Expiry Date:");
-                    expiryDateLabel.setFont(font);
-                    expiryDateLabel.setForeground(new Color(255, 255, 255));
-                    cardGbc.gridx = 0;
-                    cardGbc.gridy = 1;
-                    cardDetailsPanel.add(expiryDateLabel, cardGbc);
-                    JTextField expiryDateField = new JTextField(20);
-                    expiryDateField.setFont(font);
-                    cardGbc.gridx = 1;
-                    cardGbc.gridy = 1;
-                    cardDetailsPanel.add(expiryDateField, cardGbc);
-
-                    JLabel cvvLabel = new JLabel("CVV:");
-                    cvvLabel.setFont(font);
-                    cvvLabel.setForeground(new Color(255, 255, 255));
-                    cardGbc.gridx = 0;
-                    cardGbc.gridy = 2;
-                    cardDetailsPanel.add(cvvLabel, cardGbc);
-                    JTextField cvvField = new JTextField(20);
-                    cvvField.setFont(font);
-                    cardGbc.gridx = 1;
-                    cardGbc.gridy = 2;
-                    cardDetailsPanel.add(cvvField, cardGbc);
-
-                    JOptionPane.showMessageDialog(frame, cardDetailsPanel, "Card Details", JOptionPane.PLAIN_MESSAGE);
-                }
+                handlePaymentMethodSelection();
             }
         });
         gbc.gridx = 1;
@@ -123,20 +84,98 @@ public class FeePaymentGUI {
         payButton.setForeground(new Color(255, 255, 255));
         payButton.setBackground(new Color(0, 123, 255));
         gbc.gridx = 1;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.LINE_END;
         panel.add(payButton, gbc);
         payButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String amount = amountField.getText();
-                JOptionPane.showMessageDialog(frame, "Amount Paid: " + amount, "Payment Successful", JOptionPane.INFORMATION_MESSAGE);
+                handlePayment();
             }
         });
+
+        // Create card details panel (initially hidden)
+        cardDetailsPanel = new JPanel(new GridBagLayout());
+        cardDetailsPanel.setBackground(new Color(128, 0, 0)); // Maroon color
+        GridBagConstraints cardGbc = new GridBagConstraints();
+        cardGbc.insets = new Insets(5, 5, 5, 5);
+
+        JLabel cardNumberLabel = new JLabel("Card Number:");
+        cardNumberLabel.setFont(font);
+        cardNumberLabel.setForeground(new Color(255, 255, 255));
+        cardGbc.gridx = 0;
+        cardGbc.gridy = 0;
+        cardDetailsPanel.add(cardNumberLabel, cardGbc);
+        cardNumberField = new JTextField(20);
+        cardNumberField.setFont(font);
+        cardGbc.gridx = 1;
+        cardGbc.gridy = 0;
+        cardDetailsPanel.add(cardNumberField, cardGbc);
+
+        JLabel expiryDateLabel = new JLabel("Expiry Date:");
+        expiryDateLabel.setFont(font);
+        expiryDateLabel.setForeground(new Color(255, 255, 255));
+        cardGbc.gridx = 0;
+        cardGbc.gridy = 1;
+        cardDetailsPanel.add(expiryDateLabel, cardGbc);
+        expiryDateField = new JTextField(20);
+        expiryDateField.setFont(font);
+        cardGbc.gridx = 1;
+        cardGbc.gridy = 1;
+        cardDetailsPanel.add(expiryDateField, cardGbc);
+
+        JLabel cvvLabel = new JLabel("CVV:");
+        cvvLabel.setFont(font);
+        cvvLabel.setForeground(new Color(255, 255, 255));
+        cardGbc.gridx = 0;
+        cardGbc.gridy = 2;
+        cardDetailsPanel.add(cvvLabel, cardGbc);
+        cvvField = new JTextField(20);
+        cvvField.setFont(font);
+        cardGbc.gridx = 1;
+        cardGbc.gridy = 2;
+        cardDetailsPanel.add(cvvField, cardGbc);
+
+        cardDetailsPanel.setVisible(false); // Initially hidden
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        panel.add(cardDetailsPanel, gbc);
 
         // Add panel to frame
         frame.getContentPane().add(panel);
         frame.setVisible(true);
+    }
+
+    private void handlePaymentMethodSelection() {
+        String selectedMethod = (String) paymentMethodComboBox.getSelectedItem();
+        cardDetailsPanel.setVisible("Credit Card".equals(selectedMethod) || "Debit Card".equals(selectedMethod));
+        SwingUtilities.getWindowAncestor(cardDetailsPanel).pack(); // Adjust the frame size
+    }
+
+    private void handlePayment() {
+        String studentID = studentIDField.getText();
+        String amount = amountField.getText();
+        String paymentMethod = (String) paymentMethodComboBox.getSelectedItem();
+
+        // Basic validation
+        if (studentID.isEmpty() || amount.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if ("Credit Card".equals(paymentMethod) || "Debit Card".equals(paymentMethod)) {
+            String cardNumber = cardNumberField.getText();
+            String expiryDate = expiryDateField.getText();
+            String cvv = cvvField.getText();
+
+            if (cardNumber.isEmpty() || expiryDate.isEmpty() || cvv.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please fill in all card details.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+
+        JOptionPane.showMessageDialog(null, "Amount Paid: ₹" + amount, "Payment Successful", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public static void main(String[] args) {

@@ -106,7 +106,7 @@ public class Personal extends JFrame {
 
                     try {
                         // Get a connection to the database
-                        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/amritamanagementsystem", "ARJUN", "@Arjunr24");
+                        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/amritamanagementsystem", "root", "root");
 
                         // Create a SQL query
                         String sql = "INSERT INTO student_info (username, password, father_name, mother_name, father_occupation, mother_occupation, address, zip_code, state, district, phone_number, landline_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
