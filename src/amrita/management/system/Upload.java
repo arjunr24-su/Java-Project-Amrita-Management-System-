@@ -22,6 +22,7 @@ public class Upload extends JFrame {
     private JCheckBox confirmationCheckBox;
 
     public Upload() {
+        getContentPane().setBackground(Color.WHITE);
         setSize(FRAME_WIDTH, FRAME_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
