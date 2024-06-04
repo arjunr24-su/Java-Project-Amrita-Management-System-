@@ -15,7 +15,7 @@ The Amrita Management System is a comprehensive tool that takes in user informat
 
 The system takes in detailed information about the student, including their academic history and entrance exam scores. It then processes this information to automate the admission process, ensuring that admissions are granted fairly and transparently.
 
-## Creator
+## Creators
 
 This project was created by **Arjun Rajesh,Yadhu Vipin,Ajith Ashok,Ayyappadas M.T **, are first-year Computer Science Engineering students at Amrita University . We passionate about using technology to improve educational processes and is excited to contribute to the Amrita community with this project.
 
