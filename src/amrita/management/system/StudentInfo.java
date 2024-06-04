@@ -2,7 +2,7 @@ package amrita.management.system;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
-
+//sql section
 public class StudentInfo {
     static final String DB_URL = "jdbc:mysql://localhost/amritamanagementsystem";
     static final String USER = "root";
@@ -30,7 +30,7 @@ public class StudentInfo {
             textFields[i] = textField;
         }
 
-        // Add buttons
+    
         JButton saveButton = new JButton("Save");
         saveButton.addActionListener(e -> {
             if (saveToDatabase(textFields))

@@ -103,7 +103,7 @@ public class Personal extends JFrame {
                     String district = districtField.getText();
                     String phoneNumber = phoneNumberField.getText();
                     String landlineNumber = landlineNumberField.getText();
-
+//sql section
                     try {
                         // Get a connection to the database
                         Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/amritamanagementsystem", "root", "root");
