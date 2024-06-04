@@ -30,8 +30,11 @@
             slab1Counts.put("ELC", 0);
 
             students = new ArrayList<>();
-
-            // Main panel with dark theme
+            
+            
+            
+// ui customization
+           
             JPanel mainPanel = new JPanel(new BorderLayout());
             mainPanel.setBackground(Color.BLACK);
 
@@ -44,7 +47,7 @@
             titlePanel.add(titleLabel);
             mainPanel.add(titlePanel, BorderLayout.NORTH);
 
-            // Form panel with grid layout
+           
             JPanel formPanel = new JPanel(new GridLayout(6, 2, 10, 10));
             formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
             formPanel.setBackground(new Color(30, 30, 30));
@@ -114,7 +117,7 @@
 
             add(mainPanel);
         }
-
+//functions
         private void evaluateMarks() {
             String studentName = nameField.getText();
             String selectedCourse = (String) courseComboBox.getSelectedItem();
@@ -171,7 +174,7 @@
                         slab1Counts.put(selectedCourse, slab1Count + 1);
                     }
                 }
-                if (slab.equals("No slab allotted")) {
+                else if (slab.equals("No slab allotted")) {
                     if (marks >= 80) {
                         slab = "Slab 2";
                     } else if (marks >= 75) {

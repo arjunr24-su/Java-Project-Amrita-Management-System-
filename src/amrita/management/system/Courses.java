@@ -5,12 +5,22 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class Courses {
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(Courses::createAndShowGUI);
+    private static Courses instance;
+    private JFrame frame;
+
+    public static Courses getInstance() {
+        if (instance == null) {
+            instance = new Courses();
+        }
+        return instance;
     }
 
-    private static void createAndShowGUI() {
-        JFrame frame = new JFrame("Course Selection");
+    private Courses() {
+        createAndShowGUI();
+    }
+
+    private void createAndShowGUI() {
+        frame = new JFrame("Course Selection");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 250);
         frame.setLayout(new BorderLayout());
@@ -41,7 +51,7 @@ public class Courses {
             public void actionPerformed(ActionEvent e) {
                 String course = (String) courseList.getSelectedItem();
                 selectedCourse.setText("You selected: " + course);
-                // Add your eligibility check logic here
+                
             }
         });
 
@@ -58,8 +68,8 @@ public class Courses {
         confirmButton.setFont(new Font("Arial", Font.BOLD, 16));
         confirmButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Instantiate the Project class
-                new Project();
+                // Do nothing, just close the frame
+                frame.dispose();
             }
         });
 
@@ -68,15 +78,13 @@ public class Courses {
         frame.add(topPanel, BorderLayout.NORTH);
         frame.add(centerPanel, BorderLayout.CENTER);
         frame.add(bottomPanel, BorderLayout.SOUTH);
-        frame.setVisible(true);
     }
 
-    private static class Project {
-        public Project() {
-            // Dummy constructor for the Project class
-            System.out.println("Project created!");
-        }
+    public void setVisible(boolean visible) {
+        frame.setVisible(visible);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(Courses::getInstance);
     }
 }
-
-

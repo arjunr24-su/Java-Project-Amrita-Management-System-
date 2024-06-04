@@ -154,31 +154,3 @@ public class Personal extends JFrame {
     }
 }
 
-class Login extends JFrame {
-    public Login() {
-        setTitle("Login");
-        setSize(300, 200);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(0, 2));
-
-        add(new JLabel("Username:"));
-        JTextField usernameField = new JTextField();
-        add(usernameField);
-
-        add(new JLabel("Password:"));
-        JPasswordField passwordField = new JPasswordField();
-        add(passwordField);
-
-        JButton loginButton = new JButton("Login");
-        loginButton.addActionListener(e -> {
-            // Handle login
-            String username = usernameField.getText();
-            String password = new String(passwordField.getPassword());
-
-            // TODO: Validate the username and password with the database
-        });
-        add(loginButton);
-
-        setVisible(true);
-    }
-}
